@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>가평 준비물</title>
+  <style>
+    :root {
+      --bg: #f6f7f2;
+      --panel: #ffffff;
+      --ink: #1d2521;
+      --muted: #68736d;
+      --line: #e2e7dd;
+      --tomato: #e24b3b;
+      --river: #287d8f;
+      --done: #77917f;
+      --shadow: 0 18px 50px rgba(28, 39, 33, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background:
+        linear-gradient(135deg, rgba(226, 75, 59, 0.12), transparent 34%),
+        linear-gradient(210deg, rgba(40, 125, 143, 0.14), transparent 38%),
+        var(--bg);
+      color: var(--ink);
+    }
+
+    .app {
+      width: min(100%, 720px);
+      margin: 0 auto;
+      padding: 24px 16px 42px;
+    }
+
+    header {
+      padding: 8px 2px 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 10vw, 48px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .progress-box {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      margin: 10px 0 18px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 24px rgba(28, 39, 33, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .progress-row span:last-child {
+      color: var(--river);
+      white-space: nowrap;
+    }
+
+    .bar {
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7ece6;
+    }
+
+    .bar-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--tomato), var(--river));
+      transition: width 180ms ease;
+    }
+
+    .section {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .section h2 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 12px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .pill {
+      flex: 0 0 auto;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eef4ef;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      align-items: center;
+      min-height: 62px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcf8;
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .item:active {
+      transform: scale(0.985);
+    }
+
+    .item input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 2px solid #cfd8ce;
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .mark img {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .item span:last-child {
+      min-width: 0;
+      font-size: 17px;
+      font-weight: 750;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .item.done {
+      border-color: rgba(119, 145, 127, 0.5);
+      background: #edf5ef;
+    }
+
+    .item.done .mark {
+      border-color: var(--tomato);
+    }
+
+    .item.done .mark img {
+      display: block;
+    }
+
+    .item.done span:last-child {
+      color: var(--done);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+    }
+
+    @media (min-width: 680px) {
+      .app {
+        padding-top: 34px;
+      }
+
+      .section {
+        padding: 20px;
+      }
+
+      .list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>가평 준비물</h1>
+    </header>
+
+    <section class="progress-box" aria-label="준비 진행률">
+      <div class="progress-row">
+        <span>준비 완료</span>
+        <span id="progressText">0 / 34</span>
+      </div>
+      <div class="bar" aria-hidden="true">
+        <div class="bar-fill" id="progressFill"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>필수 <span class="pill">16개</span></h2>
+      <div class="list">
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>신분증</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>휴대폰</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>충전기</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>보조배터리</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>지갑 / 카드 / 현금</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>개인 상비약</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>칫솔 / 치약</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>수건</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>속옷</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>양말</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>여벌 옷</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>잠옷 / 편한 옷</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>물놀이 반바지</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>아쿠아슈즈 / 샌들</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>선크림</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>슬리퍼</span></label>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>선택 <span class="pill">18개</span></h2>
+      <div class="list">
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>세면도구</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>샴푸 / 바디워시</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>면도기</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>렌즈 / 안경</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>모자</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>선글라스</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>비닐봉투</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>컵 / 텀블러</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>숙취해소제</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>소화제</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>간식</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>담배 / 라이터</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>물티슈</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>휴지</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>작은 가방</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>우산 / 우비</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>멀티탭</span></label>
+        <label class="item"><input type="checkbox"><span class="mark"><img src="KakaoTalk_20260624_104726388.png" alt=""></span><span>스피커</span></label>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+    const progressText = document.getElementById('progressText');
+    const progressFill = document.getElementById('progressFill');
+
+    function updateProgress() {
+      const checked = checkboxes.filter((box) => box.checked).length;
+      const total = checkboxes.length;
+      progressText.textContent = `${checked} / ${total}`;
+      progressFill.style.width = `${Math.round((checked / total) * 100)}%`;
+    }
+
+    checkboxes.forEach((box) => {
+      box.addEventListener('change', () => {
+        box.closest('.item').classList.toggle('done', box.checked);
+        updateProgress();
+      });
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
